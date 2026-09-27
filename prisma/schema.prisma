@@ -1,0 +1,228 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String           @id @default(cuid())
+  name          String
+  email         String           @unique
+  passwordHash  String
+  role          UserRole         @default(CLIENT)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  conversations AIConversation[]
+  notifications Notification[]
+  orders        Order[]
+  messages      SupportMessage[]
+  tickets       SupportTicket[]
+  transactions  Transaction[]
+
+  @@index([role])
+}
+
+model Service {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  category      String
+  description   String
+  details       String?
+  startingPrice Decimal? @db.Decimal(10, 2)
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  orders        Order[]
+
+  @@index([category])
+  @@index([active])
+}
+
+model Order {
+  id           String        @id @default(cuid())
+  userId       String
+  serviceId    String
+  status       OrderStatus   @default(PENDING)
+  amount       Decimal?      @db.Decimal(10, 2)
+  requirements String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  service      Service       @relation(fields: [serviceId], references: [id])
+  user         User          @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+
+  @@index([userId])
+  @@index([serviceId])
+  @@index([status])
+}
+
+model Transaction {
+  id               String        @id @default(cuid())
+  userId           String
+  orderId          String
+  amount           Decimal       @db.Decimal(10, 2)
+  status           PaymentStatus @default(PENDING)
+  gateway          String?
+  gatewayReference String?
+
+  paymentMethod     String?
+  receiptUrl        String?
+  receiptFileName   String?
+  receiptUploadedAt DateTime?
+  verifiedAt        DateTime?
+  verifiedBy        String?
+  rejectionReason   String?
+
+  user  User  @relation(fields: [userId], references: [id])
+  order Order @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([orderId])
+  @@index([status])
+}
+
+model SupportTicket {
+  id          String           @id @default(cuid())
+  userId      String
+  subject     String
+  description String?
+  status      TicketStatus     @default(OPEN)
+  priority    TicketPriority   @default(MEDIUM)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  messages    SupportMessage[]
+  user        User             @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+  @@index([priority])
+}
+
+model SupportMessage {
+  id         String        @id @default(cuid())
+  ticketId   String
+  senderId   String
+  senderType SenderType
+  message    String
+  createdAt  DateTime      @default(now())
+  sender     User          @relation(fields: [senderId], references: [id])
+  ticket     SupportTicket @relation(fields: [ticketId], references: [id])
+
+  @@index([ticketId])
+}
+
+model PortfolioProject {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String
+  description String
+  content     String?
+  projectUrl  String?
+  githubUrl   String?
+  imageUrl    String?
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([featured])
+  @@index([published])
+}
+
+model AIConversation {
+  id        String      @id @default(cuid())
+  userId    String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  user      User?       @relation(fields: [userId], references: [id])
+  messages  AIMessage[]
+
+  @@index([userId])
+}
+
+model AIMessage {
+  id             String         @id @default(cuid())
+  conversationId String
+  senderType     SenderType
+  message        String
+  createdAt      DateTime       @default(now())
+  conversation   AIConversation @relation(fields: [conversationId], references: [id])
+
+  @@index([conversationId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  message   String
+  rating    Int?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([published])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([read])
+}
+
+enum UserRole {
+  CLIENT
+  ADMIN
+  SUPPORT
+}
+
+enum OrderStatus {
+  PENDING
+  ACCEPTED
+  IN_PROGRESS
+  REVIEW
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  VERIFICATION_PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_FOR_CLIENT
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum SenderType {
+  USER
+  ADMIN
+  AI
+}
