@@ -1,8 +1,13 @@
 ﻿@import "tailwindcss";
 
 :root {
-  --background: #080808;
+  --background: #070708;
   --foreground: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--background);
 }
 
 html,
@@ -19,4 +24,707 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070708;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #29292d;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #414148;
+}
+
+/* -------------------------------------------------------
+   Ambient background
+------------------------------------------------------- */
+
+.ambient-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, black, transparent 70%);
+}
+
+.ambient-orb {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 999px;
+  filter: blur(110px);
+  opacity: 0.13;
+  animation: drift 12s ease-in-out infinite alternate;
+}
+
+.ambient-orb-one {
+  left: -180px;
+  top: 200px;
+  background: #5b21b6;
+}
+
+.ambient-orb-two {
+  right: -180px;
+  top: 700px;
+  background: #0369a1;
+  animation-delay: -5s;
+}
+
+/* -------------------------------------------------------
+   Navigation
+------------------------------------------------------- */
+
+.nav-link {
+  position: relative;
+  transition: color 250ms ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -8px;
+  height: 1px;
+  background: white;
+  transition: right 250ms ease;
+}
+
+.nav-link:hover {
+  color: white;
+}
+
+.nav-link:hover::after {
+  right: 0;
+}
+
+/* -------------------------------------------------------
+   Hero
+------------------------------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: revealUp 800ms cubic-bezier(.2,.7,.2,1) forwards;
+}
+
+.reveal-delay-1 {
+  animation-delay: 120ms;
+}
+
+.reveal-delay-2 {
+  animation-delay: 220ms;
+}
+
+.reveal-delay-3 {
+  animation-delay: 320ms;
+}
+
+.hero-muted {
+  color: rgba(255,255,255,0.28);
+  animation: heroPulse 5s ease-in-out infinite;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #8ef0bd;
+  box-shadow: 0 0 14px rgba(142,240,189,0.7);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+.primary-button {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 250ms ease,
+    box-shadow 250ms ease,
+    background 250ms ease;
+}
+
+.primary-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-110%);
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255,255,255,0.55),
+    transparent
+  );
+  transition: transform 600ms ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(255,255,255,0.12);
+}
+
+.primary-button:hover::before {
+  transform: translateX(110%);
+}
+
+.secondary-button {
+  transition:
+    transform 250ms ease,
+    background 250ms ease,
+    border-color 250ms ease;
+}
+
+.secondary-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.07);
+}
+
+.stat-item {
+  transition: transform 250ms ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-3px);
+}
+
+.hero-visual {
+  position: relative;
+  min-height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tech-card {
+  position: relative;
+  width: min(100%, 520px);
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 28px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.018));
+  box-shadow:
+    0 35px 100px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  backdrop-filter: blur(18px);
+  animation: cardFloat 7s ease-in-out infinite;
+}
+
+.tech-card-glow {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  top: -100px;
+  right: -70px;
+  border-radius: 999px;
+  background: rgba(90,70,255,0.22);
+  filter: blur(70px);
+}
+
+.tech-core {
+  position: relative;
+  height: 280px;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.core-circle {
+  position: relative;
+  z-index: 5;
+  width: 104px;
+  height: 104px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255,255,255,0.16), rgba(255,255,255,0.025));
+  box-shadow:
+    0 0 50px rgba(255,255,255,0.06),
+    inset 0 0 30px rgba(255,255,255,0.035);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: coreGlow 4s ease-in-out infinite;
+}
+
+.orbit {
+  position: absolute;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+}
+
+.orbit-one {
+  width: 170px;
+  height: 170px;
+  animation: spin 12s linear infinite;
+}
+
+.orbit-two {
+  width: 230px;
+  height: 230px;
+  border-style: dashed;
+  animation: spinReverse 18s linear infinite;
+}
+
+.orbit-three {
+  width: 300px;
+  height: 170px;
+  transform: rotate(-25deg);
+  animation: spin 20s linear infinite;
+}
+
+.orbit-dot {
+  position: absolute;
+  z-index: 6;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: white;
+  box-shadow: 0 0 18px rgba(255,255,255,0.65);
+}
+
+.dot-one {
+  transform: translate(84px, -42px);
+}
+
+.dot-two {
+  transform: translate(-110px, 35px);
+  width: 6px;
+  height: 6px;
+  opacity: 0.65;
+}
+
+.dot-three {
+  transform: translate(8px, 112px);
+  width: 5px;
+  height: 5px;
+  opacity: 0.45;
+}
+
+.mini-panel {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 15px;
+  background: rgba(255,255,255,0.025);
+  transition: transform 250ms ease, background 250ms ease;
+}
+
+.mini-panel:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.055);
+}
+
+.mini-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 9px;
+  color: rgba(255,255,255,0.45);
+  font-size: 8px;
+}
+
+.floating-chip {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: 999px;
+  background: rgba(12,12,14,0.72);
+  color: rgba(255,255,255,0.58);
+  font-size: 10px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+.floating-chip-one {
+  top: 16%;
+  right: -1%;
+  animation: chipFloat 5s ease-in-out infinite;
+}
+
+.floating-chip-two {
+  bottom: 15%;
+  left: -1%;
+  animation: chipFloat 6s ease-in-out infinite reverse;
+}
+
+/* -------------------------------------------------------
+   Sections
+------------------------------------------------------- */
+
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: rgba(255,255,255,0.34);
+}
+
+.section-title {
+  margin-top: 16px;
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+/* -------------------------------------------------------
+   Services
+------------------------------------------------------- */
+
+.service-card {
+  position: relative;
+  min-height: 310px;
+  overflow: hidden;
+  padding: 34px;
+  background: #0b0b0d;
+  transition:
+    transform 350ms cubic-bezier(.2,.7,.2,1),
+    background 350ms ease,
+    box-shadow 350ms ease;
+}
+
+.service-card:nth-child(even) {
+  background: #0d0d0f;
+}
+
+.service-card:hover {
+  z-index: 2;
+  transform: translateY(-5px);
+  background: #111114;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+}
+
+.service-line {
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.service-card:hover .service-line {
+  opacity: 1;
+}
+
+.service-arrow {
+  color: rgba(255,255,255,0.25);
+  transition:
+    transform 300ms ease,
+    color 300ms ease;
+}
+
+.service-card:hover .service-arrow {
+  color: white;
+  transform: translate(4px, -4px);
+}
+
+/* -------------------------------------------------------
+   Work
+------------------------------------------------------- */
+
+.project-card {
+  position: relative;
+  min-height: 390px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 24px;
+  padding: 30px;
+  background: rgba(255,255,255,0.025);
+  transition:
+    transform 350ms cubic-bezier(.2,.7,.2,1),
+    border-color 350ms ease,
+    background 350ms ease;
+}
+
+.project-card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.045);
+}
+
+.project-glow {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  right: -100px;
+  top: -100px;
+  border-radius: 999px;
+  filter: blur(55px);
+  opacity: 0.8;
+  transition: transform 500ms ease;
+}
+
+.project-card:hover .project-glow {
+  transform: scale(1.25);
+}
+
+/* -------------------------------------------------------
+   Process
+------------------------------------------------------- */
+
+.process-card {
+  padding: 27px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  background: rgba(255,255,255,0.025);
+  transition:
+    transform 300ms ease,
+    background 300ms ease,
+    border-color 300ms ease;
+}
+
+.process-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255,255,255,0.045);
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* -------------------------------------------------------
+   CTA
+------------------------------------------------------- */
+
+.cta-panel {
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(110,90,255,0.13), transparent 45%),
+    linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018));
+}
+
+.cta-glow {
+  position: absolute;
+  width: 420px;
+  height: 180px;
+  left: 50%;
+  top: -100px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(100,80,255,0.13);
+  filter: blur(70px);
+}
+
+/* -------------------------------------------------------
+   AI button
+------------------------------------------------------- */
+
+.ai-float {
+  transition:
+    transform 250ms ease,
+    box-shadow 250ms ease;
+  animation: aiFloat 4s ease-in-out infinite;
+}
+
+.ai-float:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 55px rgba(255,255,255,0.16);
+}
+
+.ai-spark {
+  animation: sparkle 2.2s ease-in-out infinite;
+}
+
+/* -------------------------------------------------------
+   Keyframes
+------------------------------------------------------- */
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(40px, -25px, 0) scale(1.08);
+  }
+}
+
+@keyframes cardFloat {
+  0%, 100% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotateX(1deg) rotateY(-1deg);
+  }
+}
+
+@keyframes coreGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 50px rgba(255,255,255,0.05),
+      inset 0 0 30px rgba(255,255,255,0.03);
+  }
+  50% {
+    box-shadow:
+      0 0 70px rgba(120,100,255,0.12),
+      inset 0 0 35px rgba(255,255,255,0.05);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes chipFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes heroPulse {
+  0%, 100% {
+    opacity: 0.28;
+  }
+  50% {
+    opacity: 0.42;
+  }
+}
+
+@keyframes aiFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(12deg) scale(1.2);
+  }
+}
+
+/* -------------------------------------------------------
+   Reduced motion
+------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* -------------------------------------------------------
+   Mobile
+------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .hero-visual {
+    min-height: 430px;
+  }
+
+  .tech-card {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .tech-core {
+    height: 220px;
+  }
+
+  .orbit-one {
+    width: 140px;
+    height: 140px;
+  }
+
+  .orbit-two {
+    width: 190px;
+    height: 190px;
+  }
+
+  .orbit-three {
+    width: 240px;
+    height: 140px;
+  }
+
+  .core-circle {
+    width: 82px;
+    height: 82px;
+  }
+
+  .floating-chip-one {
+    right: -5px;
+  }
+
+  .floating-chip-two {
+    left: -5px;
+  }
+
+  .service-card {
+    min-height: 280px;
+    padding: 27px;
+  }
+
+  .project-card {
+    min-height: 330px;
+  }
 }
